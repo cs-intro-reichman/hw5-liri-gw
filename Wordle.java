@@ -24,16 +24,18 @@ public class Wordle {
     // Compute feedback for a single guess into resultRow.
     // G for exact match, Y if letter appears anywhere else, _ otherwise.
     public static void computeFeedback(String secret, String guess, char[] resultRow) {
-		for(int i = 0; i < 5; i++) {
+		int j = 0;
+        for(int i = 0; i < 5; i++) {
             if(secret.charAt(i) == guess.charAt(i)) {
-                System.out.println('G');
+                resultRow[j] = 'G';
             }
             else if(secret.indexOf(guess.charAt(i)) != -1) {
-                System.out.println('Y');
+                resultRow[j] = 'Y';
             }
             else {
-                System.out.println('_');
+                resultRow[j] = '_';
             }
+            j++;
         }
     }
 
