@@ -24,18 +24,16 @@ public class Wordle {
     // Compute feedback for a single guess into resultRow.
     // G for exact match, Y if letter appears anywhere else, _ otherwise.
     public static void computeFeedback(String secret, String guess, char[] resultRow) {
-		int j = 0;
         for(int i = 0; i < 5; i++) {
             if(secret.charAt(i) == guess.charAt(i)) {
-                resultRow[j] = 'G';
+                resultRow[i] = 'G';
             }
-            else if(secret.indexOf(guess.charAt(i)) != -1) {
-                resultRow[j] = 'Y';
+            else if(containsChar(secret, guess.charAt(i))) {
+                resultRow[i] = 'Y';
             }
             else {
-                resultRow[j] = '_';
+                resultRow[i] = '_';
             }
-            j++;
         }
     }
 
@@ -48,7 +46,7 @@ public class Wordle {
 	// guesses[2][3] // 'L'
 	// guesses[2][4] // 'O'
     public static void storeGuess(String guess, char[][] guesses, int row) {
-        for(int j = 0; j < guesses[row].length; j++) { 
+        for(int j = 0; j < 5; j++) { 
             guesses[row][j] = guess.charAt(j);
         }
     }
@@ -94,8 +92,8 @@ public class Wordle {
         String secret = chooseSecretWord(dict);
 
         // Prepare 2D arrays for guesses and results
-        char[][] guesses = new char[6][5];
-        char[][] results = new char[6][5];
+        char[][] guesses = new char[MAX_ATTEMPTS][WORD_LENGTH];
+        char[][] results = new char[MAX_ATTEMPTS][WORD_LENGTH];
 
         // Prepare to read from the standart input 
         In inp = new In();
@@ -113,7 +111,7 @@ public class Wordle {
                 System.out.print("Enter your guess (5-letter word): ");
                 guess = inp.readString();
                 
-                if (guess.length() != 5) {
+                if (guess.length() != WORD_LENGTH) {
                     System.out.println("Invalid word. Please try again.");
                 } else {
                     valid = true;
